@@ -1,0 +1,71 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Все товары{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="container px-5 my-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-2">
+            <div class="bg-light p-3 sidebar">
+                <span class="fs-5 fw-semibold d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">Категории</span>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'shop:product_list' %}" class="nav-link {% if not category %}active{% endif %}">Все товары</a>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="nav-item">
+                        <a href="{{ cat.get_absolute_url }}" class="nav-link {% if category.slug == cat.slug %}active{% endif %}" aria-current="page">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-10">
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-start mx-2">
+            {% for product in page_obj %}
+            <div class="col mb-4 px-2">
+                <div class="card h-100">
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{{ product.thumbnail.url }}" class="card-img-top">
+                    </a>
+                    <div class="card-body">
+                        <div class="product-card-info justify-content-center">
+                            <h6 class="product-title">
+                                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                            </h6>
+                            <div class="product-price mb-3">
+                                <span class="text-primary">₸ {{ product.price }}</span>
+                                {% if product.old_price %}
+                                <del class="fs-sm text-muted">₸ {{ product.old_price }}</del>
+                                {% endif %}
+                            </div>
+                            <form class="d-flex justify-content-center" action="{% url 'cart:cart_add' product.id %}" method="post">
+                                {{ cart_product_form }}
+                                {% csrf_token %}
+                                <input class="btn btn-outline-dark btn-sm w-100" type="submit" value="Добавить в корзину">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+            {% include 'includes/pagination.html' %}
+        </div>
+    </div>
+
+    <script>
+        const selects = document.querySelectorAll("select");
+        selects.forEach((select) => {
+            select.setAttribute("hidden", "hidden");
+        });
+    </script>
+
+</section>
+
+{% endblock %}

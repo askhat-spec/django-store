@@ -1,0 +1,19 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Спасибо!
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5 px-5">
+    <h1>Спасибо!</h1>
+    <p>Ваш заказ был успешно обработан. Мы свяжемся с вами в ближайщее время. </p>
+    <p>
+        Номер вашего заказа - 
+        <span class="fw-bold fs-4">{{ order }}</span>. На <a href="{% url 'shop:main' %}">главную.</a>
+    </p>
+    
+</div>
+
+{% endblock %}

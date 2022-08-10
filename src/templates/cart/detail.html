@@ -1,0 +1,67 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Корзина
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2>Корзина</h2>
+    <table class="table table-hover table-striped table-condensed mt-5">
+        <thead>
+            <tr>
+                <th scope="col">Изображение</th>
+                <th scope="col">Товар</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Удалить</th>
+                <th scope="col">Цена за штуку</th>
+                <th scope="col">Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+                {% with product=item.product %}
+                <tr>
+                    <th scope="row justify-content-center">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img class="cart-image" src="{{ product.thumbnail.url }}" alt="">
+                        </a>
+                    </th>
+                    <td>{{ product.name }}</td>
+                    <td>
+                        <form class="d-flex" action="{% url 'cart:cart_add' product.id %}" method="post">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.override }}
+                                <input class="btn btn-outline-dark mx-2" type="submit" value="Изменить">
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+                            <input class="btn btn-outline-dark" type="submit" value="Удалить">
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td>₸ {{ item.price }}</td>
+                    <td>₸ {{ item.total_price }}</td>
+                </tr>
+                {% endwith %}
+            {% endfor %}
+        </tbody>
+        <tr class="total">
+            <td>
+                <h4>Итог:</h4>
+            </td>
+            <td colspan="4"></td>
+            <td class="num">₸ {{ cart.get_total_price }}</td>
+        </tr>
+    </table>
+
+    <div class="mt-4">
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-dark mx-2" href="{% url 'shop:product_list' %}">Продолжить покупки</a>
+            <a class="btn btn-outline-success mx-2" href="{% url 'orders:order_create' %}">Купить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="product__details-nav d-sm-flex justify-content-center">
+                    <ul class="nav nav-tabs flex-sm-column" id="productThumbTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="thumb0-tab" data-bs-toggle="tab"
+                                data-bs-target="#thumb0" type="button" role="tab" aria-controls="thumb0"
+                                aria-selected="true">
+                                <img src="{{ product.thumbnail.url }}" style="height: auto; width: 85px;" alt="">
+                            </button>
+                        </li>
+                        {% for p in photos %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="thumb{{ forloop.counter }}-tab" data-bs-toggle="tab" data-bs-target="#thumb{{ forloop.counter }}"
+                                type="button" role="tab" aria-controls="thumb{{ forloop.counter }}" aria-selected="false">
+                                <img src="{{ p.thumbnail.url }}" style="height: auto; width: 85px;" alt="">
+                            </button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="product__details-thumb">
+                        <div class="tab-content" id="productThumbContent">
+                            <div class="tab-pane fade active show" id="thumb0" role="tabpanel"
+                                aria-labelledby="thumb0-tab">
+                                <div class="product__details-nav-thumb w-img">
+                                    <img src="{{ product.thumbnail.url }}" alt="">
+                                </div>
+                            </div>
+                            {% for p in photos %}
+                            <div class="tab-pane fade" id="thumb{{ forloop.counter }}" role="tabpanel" aria-labelledby="thumb{{ forloop.counter }}-tab">
+                                <div class="product__details-nav-thumb w-img">
+                                    <img src="{{ p.thumbnail.url }}" alt="">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="product__details-content">
+                    <p class="small fw-bolder">Артикул: {{ product.article }}</p>
+                    <h1 class="d-block text-gray mb-2">{{ product.name }}</h1>
+                    <div class="fs-5 mb-4">
+                        <h2 class="dt">₸ {{ product.price }}</h2>
+                        {% if product.old_price %}
+                        <del class="fs-sm text-muted">₸ {{ product.old_price }}</del>
+                        <h4>Дешевле на {{ product.get_profit }}%</h4>                                       
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="features-des mb-20 mt-10">
+                        <p class="lead">{{ product.description|safe|linebreaks }}</p>
+                    </div>
+                    <form class="d-flex" action="{% url 'cart:cart_add' product.id %}" method="post">
+                        {{ cart_product_form }}
+                        {% csrf_token %}
+                        <input class="btn btn-outline-dark mx-2" type="submit" value="Добавить в корзину">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

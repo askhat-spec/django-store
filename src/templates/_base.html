@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/vendor/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/vendor/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/vendor/css/all.min.css' %}">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <div class="container px-5">
+            <a class="navbar-brand" href="{% url 'shop:main' %}">
+                <img src="{% static 'shop/img/logo.png' %}" alt="" style="width: 40px; height:auto;">
+                Sabinur Store
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'shop:product_list' %}">Купить</a>
+                    </li>
+                    {% if categories %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false">
+                            Категории
+                        </a>
+                        <div class="dropdown-menu">
+                            {% for cat in categories %}
+                            <a class="dropdown-item" href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">О нас</a>
+                    </li>
+                    <form class="d-flex">
+                        <input class="form-control me-sm-1" type="search" placeholder="Поиск">
+                        <button class="btn btn-light" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </ul>
+                <form class="d-flex">
+                    {% with total_items=cart|length %}
+                        {% if total_items > 0 %}
+                        <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-info " type="submit">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            Корзина
+                            <strong>({{ total_items }})</strong>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-danger " type="submit">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            Корзина
+                            <strong>(0)</strong>
+                        </a>
+                        {% endif %}
+                    {% endwith %}
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer bg-dark pt-4 text-white mt-auto">
+        <div class="container p-5">
+            <div class="row justify-content-between">
+                <div class="col-md-8 col-lg-4 py-4">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="text-muted">
+                                Магазин
+                            </h5>
+                            <ul class="menu-list">
+                                <li class="menu-list-item">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <a href="#">Контакты</a>
+                                </li>
+                                <li class="menu-list-item">
+                                    <i class="fa-brands fa-instagram"></i>
+                                    <a href="#">Instagram</a>
+                                </li>
+                                <li class="menu-list-item">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <a href="#">WhatsApp</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h5 class="text-muted">
+                                Помощь
+                            </h5>
+                            <ul class="menu-list">
+                                <li class="menu-list-item">
+                                    <a href="#">Доставка</a>
+                                </li>
+                                <li class="menu-list-item">
+                                    <a href="#">Оплата</a>
+                                </li>
+                                <li class="menu-list-item">
+                                    <a href="#">Возврат</a>
+                                </li>
+                                <li class="menu-list-item">
+                                    <a href="#">Вопрос/Ответ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-lg-4 py-4">
+                    <div class="form-group">
+                        <h5 class="text-muted">
+                            Подписка на рассылку
+                        </h5>
+                        <p>Подпишитесь на нашу новостную рассылку чтобы знать о новых поступлениях</p>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Почтовый адрес">
+                            <button class="btn btn-primary" type="submit">Подписаться</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-primary py-4">
+            <div class="container">
+                <p class="m-0 text-center text-light">
+                    © SABINUR STORE 2022
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'shop/vendor/js/jquery.min.js' %}"></script>
+    <script src="{% static 'shop/vendor/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'shop/vendor/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'shop/js/script.js' %}"></script>
+</body>
+
+</html>
