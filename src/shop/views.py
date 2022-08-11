@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
+from django.views.generic import ListView
+from django.conf import settings
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank, SearchHeadline
 
 from .filters import ProductFilter
-from .models import Category, Header, Product, ProductImage
+from .models import Header, Product, ProductImage
 
 
 def index(request):
@@ -41,3 +44,27 @@ def product_detail(request, slug):
             'photos': photos,
         }
     )
+
+
+class Search(ListView):
+    paginate_by = 20
+    template_name = 'shop/search.html'
+    # allow_empty = False
+    
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        if not settings.DEBUG:
+            vector = SearchVector('name', 'description')
+            query = SearchQuery(q)
+            # search_headline = SearchHeadline('description', query)
+            # object_list = Paper.objects.annotate(rank=SearchRank(vector, query)).annotate(headline=search_headline).filter(rank__gte=0.001).order_by('-rank')
+            object_list = Product.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.001).order_by('-rank')
+        else:
+            object_list = Product.objects.filter(name__icontains=q)
+        return object_list
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        # context["search_list_lenght"] = self.object_list.count()
+        return context
