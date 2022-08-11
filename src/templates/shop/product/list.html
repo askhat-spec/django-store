@@ -8,24 +8,9 @@
 {% block content %}
 <section class="container px-5 my-4">
     <div class="row">
-        <div class="col-sm-12 col-md-2">
-            <div class="bg-light p-3 sidebar">
-                <span class="fs-5 fw-semibold d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">Категории</span>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="{% url 'shop:product_list' %}" class="nav-link {% if not category %}active{% endif %}">Все товары</a>
-                    </li>
-                    {% for cat in categories %}
-                    <li class="nav-item">
-                        <a href="{{ cat.get_absolute_url }}" class="nav-link {% if category.slug == cat.slug %}active{% endif %}" aria-current="page">
-                            {{ cat.name }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-10">
+
+        <!-- Products -->
+        <div class="col-sm-12 col-md-9">
             <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-start mx-2">
             {% for product in page_obj %}
             <div class="col mb-4 px-2">
@@ -57,10 +42,33 @@
             </div>
             {% include 'includes/pagination.html' %}
         </div>
+
+        <!-- Sidebar -->
+        <div class="col-sm-12 col-md-3">
+            <div class="bg-light p-3">
+                <span class="fs-5 fw-semibold d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">Категории</span>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'shop:product_list' %}" class="nav-link {% if not category %}active{% endif %}">Все товары</a>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="nav-item">
+                        <a href="{{ cat.get_absolute_url }}" class="nav-link {% if category.slug == cat.slug %}active{% endif %}" aria-current="page">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <form class="form-group py-4 m-2 px-2" method="get">
+                    {{ filter.form.as_p }}
+                    <input type="submit" class="btn btn-outline-success btn-sm"/>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
-        const selects = document.querySelectorAll("select");
+        const selects = document.querySelectorAll("#id_quantity");
         selects.forEach((select) => {
             select.setAttribute("hidden", "hidden");
         });
