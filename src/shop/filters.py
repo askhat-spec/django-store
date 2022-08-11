@@ -1,7 +1,6 @@
-from dataclasses import fields
 import django_filters
-from django_filters import widgets
-from .models import Product
+from .models import Product, Category
+from django import forms
 
 
 class ProductFilter(django_filters.FilterSet):
@@ -12,9 +11,19 @@ class ProductFilter(django_filters.FilterSet):
         ('pricier', 'Сначала дороже'),
     )
 
+    category = django_filters.ModelChoiceFilter(
+        queryset=Category.objects.all(), 
+        empty_label='Все категории',
+        widget=forms.Select(
+            attrs={
+                'class': 'form-select',
+                }
+            )
+        )
+
     price = django_filters.RangeFilter(
         label='По ценам (от-до)',
-        widget=widgets.RangeWidget(
+        widget=django_filters.widgets.RangeWidget(
             attrs={
                 'class': 'form-control',
                 'placeholder': 'Цена'
@@ -22,23 +31,29 @@ class ProductFilter(django_filters.FilterSet):
             )
         )
 
-    ordering = django_filters.ChoiceFilter(label='Сортировка', choices=CHOICES, method='filter_by_order', empty_label=None)
+    ordering = django_filters.ChoiceFilter(
+        label='Сортировка', 
+        choices=CHOICES, method='filter_by_order', 
+        empty_label=None,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-select',
+                }
+            )
+        )
 
     class Meta:
         model = Product
-        fields = ['price', 'ordering']
+        fields = ['category', 'ordering', 'price']
 
     def filter_by_order(self, queryset, name, value):
-        match value:
-            case 'newest':
-                expression = '-created'
-            case 'oldest':
-                expression = 'created'
-            case 'cheaper':
-                expression = 'price'
-            case 'pricier':
-                expression = '-price'
-            case _:
-                expression = '-created'
+        ORDER_EXP = (
+            ('newest', '-created'),
+            ('oldest', 'created'),
+            ('cheaper', 'price'),
+            ('pricier', '-price'),
+        )
 
-        return queryset.order_by(expression)
+        for key, expression in ORDER_EXP:
+            if key == value:
+                return queryset.order_by(expression)

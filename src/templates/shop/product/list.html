@@ -46,22 +46,11 @@
         <!-- Sidebar -->
         <div class="col-sm-12 col-md-3">
             <div class="bg-light p-3">
-                <span class="fs-5 fw-semibold d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">Категории</span>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="{% url 'shop:product_list' %}" class="nav-link {% if not category %}active{% endif %}">Все товары</a>
-                    </li>
-                    {% for cat in categories %}
-                    <li class="nav-item">
-                        <a href="{{ cat.get_absolute_url }}" class="nav-link {% if category.slug == cat.slug %}active{% endif %}" aria-current="page">
-                            {{ cat.name }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
+                <span class="fs-5 fw-semibold align-items-center pb-3 link-dark text-decoration-none border-bottom">Фильтр</span>
                 <form class="form-group py-4 m-2 px-2" method="get">
                     {{ filter.form.as_p }}
-                    <input type="submit" class="btn btn-outline-success btn-sm"/>
+                    <input type="submit" class="btn btn-outline-success btn-sm mb-3"/>
+                    <a class="btn btn-outline-danger btn-sm" href="{% url 'shop:product_list' %}">Сбросить Фильтр</a>
                 </form>
             </div>
         </div>

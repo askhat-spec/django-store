@@ -41,7 +41,7 @@
                         </a>
                         <div class="dropdown-menu">
                             {% for cat in categories %}
-                            <a class="dropdown-item" href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                            <a class="dropdown-item" href="/shop/?category={{ cat.get_absolute_url }}">{{ cat.name }}</a>
                             {% endfor %}
                         </div>
                     </li>
