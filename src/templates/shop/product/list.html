@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
+{% load shop_extras %}
 
 {% block title %}
 {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
@@ -40,7 +41,53 @@
             </div>
             {% endfor %}
             </div>
-            {% include 'includes/pagination.html' %}
+            
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="...">
+                <ul class="pagination  flex-wrap justify-content-center">
+                    {% if page_obj.has_previous %}
+
+                    <li class="page-item">
+                        <a class="page-link" href="{% pagination_url 1 'page' request.GET.urlencode %}">&laquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{% pagination_url page_obj.previous_page_number 'page' request.GET.urlencode %}">&#8249</a>
+                    </li>
+                    {% if page_obj.number|add:'-2' >= 2 %}
+                    <li class="page-item">
+                        <span class="page-link">• • •</span>
+                    </li>
+
+                    {% endif %}
+                    {% endif %}
+
+                    {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ i }}</a>
+                    </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %} <li class="page-item">
+                        <a class="page-link" href="{% pagination_url i 'page' request.GET.urlencode %}">{{ i }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %} <li class="page-item">
+                        <span class="page-link">• • •</span>
+                        </li>
+                        {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% pagination_url page_obj.next_page_number 'page' request.GET.urlencode %}">&#8250;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{% pagination_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
         </div>
 
         <!-- Sidebar -->
