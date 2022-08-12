@@ -4,13 +4,13 @@
 403
 {% endblock %}
 
-<div class="container my-4">
+{% block content %}
+
+<div class="container my-5">
     <div class="text-center">
         <h1>Упс... У вас недостаточно прав для просмотра данной страницы</h1>
         <a href="{% url 'shop:main' %}">Вернуться на главную</a>
     </div>
 </div>
-
-{% block content %}
 
 {% endblock %}

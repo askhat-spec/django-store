@@ -4,13 +4,13 @@
 Ошибка
 {% endblock %}
 
+{% block content %}
+
 <div class="container my-4">
     <div class="text-center">
         <h1>Упс... Запрос неправильный</h1>
         <a href="{% url 'shop:main' %}">Вернуться на главную</a>
     </div>
 </div>
-
-{% block content %}
 
 {% endblock %}
