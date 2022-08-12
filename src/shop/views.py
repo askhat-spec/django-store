@@ -20,19 +20,37 @@ def index(request):
     )
 
 
-def product_list(request):
-    products = Product.objects.filter(available=True).order_by('-created')
-    filter = ProductFilter(request.GET, queryset=products)
-    paginator = Paginator(filter.qs, 2)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+# def product_list(request):
+#     products = Product.objects.filter(available=True).order_by('-created')
+#     filter = ProductFilter(request.GET, queryset=products)
+#     paginator = Paginator(filter.qs, 2)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'shop/product/list.html',
-            {
-                'page_obj': page_obj,
-                'filter': filter,
-            }
-        )
+#     return render(request, 'shop/product/list.html',
+#             {
+#                 'page_obj': page_obj,
+#                 'filter': filter,
+#             }
+#         )
+
+
+class ProductList(ListView):
+    template_name = 'shop/product/list.html'
+    model = Product
+    paginate_by = 2
+    ordering = ['-created']
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        product_filtered_list = ProductFilter(self.request.GET, queryset=qs)
+        return product_filtered_list.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        filter = ProductFilter(self.request.GET, self.get_queryset())
+        context['filter'] = filter
+        return context
 
 
 def product_detail(request, slug):

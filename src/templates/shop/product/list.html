@@ -12,7 +12,7 @@
         <!-- Products -->
         <div class="col-sm-12 col-md-9">
             <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-start mx-2">
-            {% for product in page_obj %}
+            {% for product in object_list %}
             <div class="col mb-4 px-2">
                 <div class="card h-100">
                     <a href="{{ product.get_absolute_url }}">
