@@ -94,11 +94,6 @@
     </div>
 </section>
 
-<script>
-    const selects = document.querySelectorAll("select");
-    selects.forEach((select) => {
-        select.setAttribute("hidden", "hidden");
-    });
-</script>
+{% include 'includes/remove_quantity.html' %}
 
 {% endblock %}

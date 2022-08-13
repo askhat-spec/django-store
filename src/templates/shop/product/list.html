@@ -96,7 +96,7 @@
                 <span class="fs-5 fw-semibold align-items-center pb-3 link-dark text-decoration-none border-bottom">Фильтр</span>
                 <form class="form-group py-4 m-2 px-2" method="get">
                     {{ filter.form.as_p }}
-                    <input type="submit" class="btn btn-outline-success btn-sm mb-3"/>
+                    <input type="submit" class="btn btn-outline-success btn-sm mb-3" value="Применить фильтр">
                     <a class="btn btn-outline-danger btn-sm" href="{% url 'shop:product_list' %}">Сбросить Фильтр</a>
                 </form>
             </div>

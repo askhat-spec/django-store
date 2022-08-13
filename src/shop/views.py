@@ -56,10 +56,12 @@ class ProductList(ListView):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, available=True)
     photos = ProductImage.objects.filter(product=product)
+    similar_products = Product.objects.filter(category=product.category, available=True).order_by('?')[:10]
     return render(request, 'shop/product/detail.html', 
         {
             'product': product, 
             'photos': photos,
+            'similar_products': similar_products,
         }
     )
 
