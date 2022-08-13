@@ -2,6 +2,7 @@ images/
 header_carousel/
 products/
 temp/
+*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

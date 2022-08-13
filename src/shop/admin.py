@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Header, Category, Product, ProductImage
+
+from .models import (
+    Header, Category, Product, 
+    ProductImage, About, Info,
+)
 
 
 @admin.register(Header)
@@ -35,6 +39,10 @@ class ProductAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src="{obj.thumbnail.url}" width="50", height=auto>')
 
     get_image.short_description = "Изображение"
+
+
+admin.site.register(About)
+admin.site.register(Info)
 
 
 admin.site.site_title = 'Sabinur Store'

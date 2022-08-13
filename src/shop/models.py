@@ -7,6 +7,7 @@ from django.urls import reverse
 from imagekit.models import ProcessedImageField
 from imagekit.processors import Thumbnail, Transpose
 
+
 @deconstructible
 class RandomFileName(object):
     def __init__(self, path):
@@ -16,27 +17,6 @@ class RandomFileName(object):
 
         extension = os.path.splitext(filename)[1]
         return self.path % (uuid4(), extension)
-
-
-class Header(models.Model):
-    """Карусель для главной страницы"""
-
-    title = models.CharField('Заголовок', max_length=255)
-    body = models.CharField('Описание', max_length=255)
-    url = models.CharField('Ссылка', max_length=128)
-    # image = models.ImageField('Картинка', upload_to=RandomFileName('header_carousel'), blank=False)
-    thumbnail = ProcessedImageField(
-        upload_to=RandomFileName('header_carousel'),
-        processors=[Transpose(), Thumbnail(700)],
-        format='WEBP',
-    )
-
-    def __str__(self) -> str:
-        return self.title
-
-    class Meta:
-        verbose_name = 'Карусель'
-        verbose_name_plural = 'Карусель'
 
 
 class Category(models.Model):
@@ -110,3 +90,53 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Изображения товара'
         verbose_name_plural = 'Изображении товара'
+
+
+# Main Page models
+
+class Header(models.Model):
+    """Карусель для главной страницы"""
+
+    title = models.CharField('Заголовок', max_length=255)
+    body = models.CharField('Описание', max_length=255)
+    url = models.CharField('Ссылка', max_length=128)
+    # image = models.ImageField('Картинка', upload_to=RandomFileName('header_carousel'), blank=False)
+    thumbnail = ProcessedImageField(
+        upload_to=RandomFileName('header_carousel'),
+        processors=[Transpose(), Thumbnail(700)],
+        format='WEBP',
+    )
+
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        verbose_name = 'Карусель'
+        verbose_name_plural = 'Карусель'
+
+
+
+class About(models.Model):
+    content = models.TextField('О нас')
+
+    def __str__(self) -> str:
+        return f'О нас {self.id}'
+
+    class Meta:
+        verbose_name = 'Страница "О нас"'
+        verbose_name_plural = 'Страница "О нас"'
+
+
+
+class Info(models.Model):
+    shipping = models.TextField('Доставка товара')
+    payment = models.TextField('Оплата')
+    refund = models.TextField('Условия возврата')
+    qa = models.TextField('Вопросы и ответы')
+
+    def __str__(self) -> str:
+        return f'Помощь {self.id}'
+
+    class Meta:
+        verbose_name = 'Страница "Помощь"'
+        verbose_name_plural = 'Страница "Помощь"'

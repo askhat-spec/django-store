@@ -48,7 +48,7 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">О нас</a>
+                        <a class="nav-link" href="{% url 'shop:about' %}">О нас</a>
                     </li>
                     <form class="d-flex" action="{% url 'shop:search' %}" method="get">
                         <input class="form-control me-sm-1" type="search" placeholder="Поиск" name="q">
@@ -113,16 +113,16 @@
                             </h5>
                             <ul class="menu-list">
                                 <li class="menu-list-item">
-                                    <a href="#">Доставка</a>
+                                    <a href="{% url 'shop:info' %}#shipping">Доставка</a>
                                 </li>
                                 <li class="menu-list-item">
-                                    <a href="#">Оплата</a>
+                                    <a href="{% url 'shop:info' %}#payment">Оплата</a>
                                 </li>
                                 <li class="menu-list-item">
-                                    <a href="#">Возврат</a>
+                                    <a href="{% url 'shop:info' %}#refund">Возврат</a>
                                 </li>
                                 <li class="menu-list-item">
-                                    <a href="#">Вопрос/Ответ</a>
+                                    <a href="{% url 'shop:info' %}#qa">Вопрос/Ответ</a>
                                 </li>
                             </ul>
                         </div>

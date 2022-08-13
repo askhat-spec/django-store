@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+
+{% block title %}
+О нас
+{% endblock %}
+
+{% block content %}
+
+<div class="container p-5">
+    {% if about %}
+    {{ about.content|safe }}
+    {% endif %}
+</div>
+
+{% endblock %}

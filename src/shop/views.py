@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank, SearchHeadline
 
 from .filters import ProductFilter
-from .models import Header, Product, ProductImage
+from .models import Header, Product, ProductImage, About, Info
 
 
 def index(request):
@@ -88,3 +88,13 @@ class Search(ListView):
         context["q"] = f'q={self.request.GET.get("q")}&'
         # context["search_list_lenght"] = self.object_list.count()
         return context
+
+
+def about(request):
+    about = About.objects.last()
+    return render(request, 'shop/about.html', {'about': about})
+
+
+def info(request):
+    info = Info.objects.last()
+    return render(request, 'shop/info.html', {'info': info})

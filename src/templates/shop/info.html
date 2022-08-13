@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Помощь
+{% endblock %}
+
+{% block content %}
+
+<div class="container p-5">
+    {% if info %}
+    <section class="mt-5" id="shipping">
+        {{ info.shipping|safe }}
+    </section>
+    <section class="mt-5" id="payment">
+        {{ info.payment|safe }}
+    </section>
+    <section class="mt-5" id="refund">
+        {{ info.refund|safe }}
+    </section>
+    <section class="mt-5" id="qa">
+        {{ info.qa|safe }}
+    </section>
+    {% endif %}
+</div>
+
+{% endblock %}
