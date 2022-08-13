@@ -1,5 +1,6 @@
 import csv
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from .models import Order, OrderItem
 
@@ -25,7 +26,18 @@ class ExportCsvMixin:
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    raw_id_fields = ['product']
+    fields = ['get_image', 'get_article', 'price', 'quantity']
+    readonly_fields = ['get_image', 'get_article', 'price', 'quantity']
+
+    def get_image(self, obj):
+        image = f'<img src="{obj.product.thumbnail.url}" width="50", height=auto>'
+        return mark_safe(f'<a href="{obj.product.get_absolute_url()}">{image}</a>')
+    
+    def get_article(self, obj):
+        return str(obj.product.article)
+
+    get_image.short_description = "Изображение"
+    get_article.short_description = "Артикул"
 
 
 @admin.register(Order)
@@ -38,6 +50,7 @@ class OrderAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_filter = ['paid', 'created']
     inlines = [OrderItemInline]
     actions = ["export_as_csv"]
+    save_on_top = True
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
