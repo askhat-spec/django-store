@@ -38,7 +38,7 @@ def index(request):
 class ProductList(ListView):
     template_name = 'shop/product/list.html'
     model = Product
-    paginate_by = 2
+    paginate_by = 30
     ordering = ['-created']
 
     def get_queryset(self):
@@ -56,7 +56,9 @@ class ProductList(ListView):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, available=True)
     photos = ProductImage.objects.filter(product=product)
-    similar_products = Product.objects.filter(category=product.category, available=True).order_by('?')[:10]
+    similar_products = Product.objects.filter(category=product.category, available=True).exclude(id=product.id).order_by('?')[:10]
+    if len(similar_products) < 3:
+        similar_products = None
     return render(request, 'shop/product/detail.html', 
         {
             'product': product, 
