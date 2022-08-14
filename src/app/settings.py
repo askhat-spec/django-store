@@ -1,13 +1,18 @@
 from pathlib import Path
+import environ
 
+
+env = environ.Env(DEBUG=(bool, False))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-h+l9hl$r_rvp$m^8k+&l$$5!zpur-d6cii2&6g9_h_4!oywvwr'
+environ.Env.read_env(BASE_DIR.parent / '.env')
 
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+SECRET_KEY = env('SECRET_KEY')
+
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,10 +67,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': env.db(),
 }
 
 AUTH_PASSWORD_VALIDATORS = [
