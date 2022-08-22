@@ -131,7 +131,7 @@ class About(models.Model):
 class Info(models.Model):
     shipping = models.TextField('Доставка товара')
     payment = models.TextField('Оплата')
-    refund = models.TextField('Условия возврата')
+    service = models.TextField('Уход')
     qa = models.TextField('Вопросы и ответы')
 
     def __str__(self) -> str:
