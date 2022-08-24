@@ -129,10 +129,10 @@ class About(models.Model):
 
 
 class Info(models.Model):
-    shipping = models.TextField('Доставка товара')
-    payment = models.TextField('Оплата')
-    service = models.TextField('Уход')
-    qa = models.TextField('Вопросы и ответы')
+    shipping = models.TextField('Доставка товара', blank=True, null=True)
+    payment = models.TextField('Оплата', blank=True, null=True)
+    service = models.TextField('Уход', blank=True, null=True)
+    qa = models.TextField('Вопросы и ответы', blank=True, null=True)
 
     def __str__(self) -> str:
         return f'Помощь {self.id}'

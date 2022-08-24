@@ -10,7 +10,7 @@ from .models import Header, Product, ProductImage, About, Info
 
 def index(request):
     carousel = Header.objects.all()
-    new_products = Product.objects.all().order_by('-created')[:10]
+    new_products = Product.objects.filter(available=True).order_by('-created')[:10]
     return render(
         request, 'shop/index.html', 
         {
@@ -42,7 +42,7 @@ class ProductList(ListView):
     ordering = ['-created']
 
     def get_queryset(self):
-        qs = self.model.objects.all()
+        qs = self.model.objects.filter(available=True)
         product_filtered_list = ProductFilter(self.request.GET, queryset=qs)
         return product_filtered_list.qs
 
