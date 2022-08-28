@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Спасибо
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="text-center">
+        <h2>Спасибо! Ваша почта успешно сохранена!</h2>
+        <a href="{% url 'shop:main' %}">Вернуться на главную</a>
+    </div>
+</div>
+
+{% endblock %}

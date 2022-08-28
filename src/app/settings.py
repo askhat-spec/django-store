@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'contact.apps.ContactConfig',
 
     'django_filters',
     'django_summernote'

@@ -1,4 +1,6 @@
 {% load static %}
+{% load contact_tags %}
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -129,16 +131,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 col-lg-4 py-4">
-                    <div class="form-group">
-                        <h5 class="text-muted">
-                            Подписка на рассылку
-                        </h5>
-                        <p>Подпишитесь на нашу новостную рассылку чтобы знать о новых поступлениях</p>
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="Почтовый адрес">
-                            <button class="btn btn-primary" type="submit">Подписаться</button>
-                        </div>
-                    </div>
+                    {% contact_form %}
                 </div>
             </div>
         </div>

@@ -1,0 +1,13 @@
+<div class="form-group">
+    <h5 class="text-muted">
+        Подписка на рассылку
+    </h5>
+    <p>Подпишитесь на нашу новостную рассылку чтобы знать о новых поступлениях</p>
+    <form action="{% url 'contact:contact' %}" method="post">
+        <div class="input-group mb-3">
+            {% csrf_token %}
+            {{ contact_form }}
+            <button class="btn btn-primary" type="submit">Подписаться</button>
+        </div>
+    </form>
+</div>
